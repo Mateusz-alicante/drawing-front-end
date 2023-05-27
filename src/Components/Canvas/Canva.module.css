@@ -1,0 +1,41 @@
+.drawing_submit {
+    background: transparent;
+    border: 3px solid #63bdf5;
+    color: #63bdf5;
+    font-size: 30px;
+    height: 80px;
+    width: 200px;
+    position: absolute;
+    bottom: 50px;
+    right: 80px;
+    letter-spacing: 6px;
+    z-index: 50;
+    filter: brightness(1.5);
+}
+
+.drawing_submit:hover {
+    background: #46d0ce;
+    color: rgb(35, 35, 35);
+}
+
+.noplay {
+    color: #46d0ce;
+    position: absolute;
+    top: 30px;
+    left: 80px;
+    font-size: 25px;
+    letter-spacing: 6px;
+    cursor: pointer;
+    z-index: 50;
+    text-decoration: none;
+}
+
+.noplay:hover {
+    text-decoration: underline;
+}
+
+.noplay svg {
+    position: absolute;
+    left: -70px;
+    top: 5px;
+}

@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #46d0ce;
+    font-size: 25px;
+    padding: 30px 90px 0 90px;
+    letter-spacing: 6px;
+    background-color: rgb(35, 35, 35);;
+}
+
+.headerRight {
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+}
+
+.headerHref {
+
+}

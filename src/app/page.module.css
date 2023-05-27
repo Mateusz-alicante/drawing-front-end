@@ -1,0 +1,43 @@
+.home {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(35, 35, 35);;
+}
+
+.titleCard {
+    position: absolute;
+    color: #46d0ce;
+    z-index: 99;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+.title {
+    font-size: 75px;
+    letter-spacing: 10px;
+}
+
+.tryPlay {
+    font-size: 40px;
+    border: 1px solid #46d0ce;
+    width: 400px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 6px;
+}
+
+.tryPlay:hover {
+    background-color: #46d0ce;
+    color: rgb(35, 35, 35);
+}
