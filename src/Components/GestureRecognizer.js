@@ -7,20 +7,23 @@ import {
   GestureRecognizerResult,
 } from "@mediapipe/tasks-vision";
 
-let video: HTMLVideoElement;
-let gestureRecognizer: GestureRecognizer;
+let gestureRecognizer = null;
+let video = null;
 let lastVideoTime = -1;
 
-export default ({ callback }: any) => {
+export default ({ callback }) => {
   const [pointCoords, setPointCoords] = useState([0, 0]);
   const [specialRedirect, setSpecialRedirect] = useState(false);
+  const [videoEl, setVideoEl] = useState(null);
+  const [gestureRecEl, setGestureRecEl] = useState(null);
+  const [lastVideoTimeStore, setLastVideoTimeStore] = useState(-1);
   const container = useRef(null);
   const router = useRouter();
 
-  const handleOnChange = (result: GestureRecognizerResult) => {
+  const handleOnChange = (result) => {
     const index = result.landmarks[0][1];
     const depth = result.worldLandmarks[0][1].z * 10;
-    const containerElement = container.current as unknown as HTMLDivElement;
+    const containerElement = container.current;
     setPointCoords([
       (1 - index.x) * containerElement.clientWidth,
       index.y * containerElement.clientHeight,
@@ -49,13 +52,16 @@ export default ({ callback }: any) => {
       numHands: 1,
       runningMode: "VIDEO",
     });
-
-    video = document.getElementById("video") as HTMLVideoElement;
+    setGestureRecEl(gestureRecognizer);
+    video = document.getElementById("video");
+    setVideoEl(video);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 1280, height: 720 }, audio: false })
       .then((stream) => {
         video.srcObject = stream;
-        video.addEventListener("loadeddata", predict);
+        video.addEventListener("loadeddata", () =>
+          setSpecialRedirect(!specialRedirect)
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -63,22 +69,21 @@ export default ({ callback }: any) => {
   };
 
   const predict = () => {
-    try {
-      const nowInMs = Date.now();
-      if (lastVideoTime !== video.currentTime) {
-        lastVideoTime = video.currentTime;
-        const result: GestureRecognizerResult =
-          gestureRecognizer.recognizeForVideo(video, nowInMs);
-        if (result.landmarks.length > 0) {
-          handleOnChange(result);
-        }
+    if (!videoEl) return;
+    const nowInMs = Date.now();
+    if (lastVideoTimeStore !== videoEl.currentTime) {
+      lastVideoTime = videoEl.currentTime;
+      setLastVideoTimeStore(lastVideoTime);
+      const result = gestureRecEl.recognizeForVideo(videoEl, nowInMs);
+      if (result.landmarks.length > 0) {
+        handleOnChange(result);
       }
-    } catch {
-      location.reload();
     }
 
     requestAnimationFrame(predict);
   };
+
+  useEffect(predict, [specialRedirect]);
 
   useEffect(() => {
     setup();

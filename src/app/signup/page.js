@@ -1,11 +1,11 @@
 "use client";
 
-import Signin from "../../Components/Signin/Signin";
+import Signup from "../../Components/Signup/Signup";
 
 export default function Home() {
   return (
     <div>
-      <Signin />
+      <Signup />
     </div>
   );
 }
