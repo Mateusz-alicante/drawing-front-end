@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { specialRedirectAtom } from "../utils/atoms";
 import {
   FilesetResolver,
   GestureRecognizer,
@@ -64,14 +63,18 @@ export default ({ callback }: any) => {
   };
 
   const predict = () => {
-    const nowInMs = Date.now();
-    if (lastVideoTime !== video.currentTime) {
-      lastVideoTime = video.currentTime;
-      const result: GestureRecognizerResult =
-        gestureRecognizer.recognizeForVideo(video, nowInMs);
-      if (result.landmarks.length > 0) {
-        handleOnChange(result);
+    try {
+      const nowInMs = Date.now();
+      if (lastVideoTime !== video.currentTime) {
+        lastVideoTime = video.currentTime;
+        const result: GestureRecognizerResult =
+          gestureRecognizer.recognizeForVideo(video, nowInMs);
+        if (result.landmarks.length > 0) {
+          handleOnChange(result);
+        }
       }
+    } catch {
+      location.reload();
     }
 
     requestAnimationFrame(predict);

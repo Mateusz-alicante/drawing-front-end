@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import GestureRecognizer from "../GestureRecognizer";
 import { getStroke } from "perfect-freehand";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./Canva.module.css";
 
@@ -44,6 +45,7 @@ function getSvgPathFromStroke(stroke) {
 export default function Canvas() {
   // button
   const buttonRef = useRef(null);
+  const router = useRouter();
 
   // change to more efficent method
   const [points, setPoints] = useState([]);
@@ -127,10 +129,10 @@ export default function Canvas() {
   }, [gestureInfo]);
 
   return (
-    <div className="z-50 absolute top-0 left-0">
-      <Link href="/" className={styles.noplay}>
+    <div className="z-50 absolute top-0 left-0 h-screen w-screen">
+      <button onClick={() => router.replace("/")} className={styles.noplay}>
         <FontAwesomeIcon icon={faArrowLeft} /> BACK
-      </Link>
+      </button>
       <div className="h-screen w-screen">
         <GestureRecognizer callback={handleStrokeUpdate} />
         <svg style={{ touchAction: "none" }}>

@@ -30,12 +30,18 @@
     text-decoration: none;
 }
 
+.noplay button {
+    text-align: none;
+}
+
 .noplay:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    filter: brightness(1.3);
 }
 
 .noplay svg {
     position: absolute;
     left: -70px;
     top: 5px;
+    background: none;
 }

@@ -1,4 +1,3 @@
-import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const savedDrawingAtom = atom("none yet");
-export const specialRedirectAtom = atom(false);
+export const savedDrawingAtom = atomWithStorage("none yet");
