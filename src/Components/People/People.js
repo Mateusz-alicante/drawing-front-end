@@ -12,8 +12,6 @@ export default function People() {
 
   const [friendship, setFriendship] = useState(user.friends);
 
-  console.log(user.friends);
-  console.log(user);
   useEffect(() => {
     setFriendship(user.friends);
   }, [user.friends]);
@@ -50,10 +48,10 @@ export default function People() {
     getPeople();
   }, []);
 
-  console.log(user.friends);
+  console.log(friendship);
 
   const handleFriendChange = async (person) => {
-    if (user.friends?.includes(person)) {
+    if (user.friends?.includes(person._id)) {
       try {
         await axios.post(
           `http://localhost:8000/unFriend`,
@@ -100,7 +98,9 @@ export default function People() {
                 handleFriendChange(person);
               }}
             >
-              {friendship?.includes(person) ? "DELETE FRIEND" : "ADD FRIEND"}
+              {friendship?.includes(person._id)
+                ? "DELETE FRIEND"
+                : "ADD FRIEND"}
             </button>
           </div>
         );
