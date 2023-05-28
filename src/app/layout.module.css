@@ -7,6 +7,8 @@
     padding: 30px 90px 0 90px;
     letter-spacing: 6px;
     background-color: rgb(35, 35, 35);;
+    z-index: 1;
+    position: sticky;
 }
 
 .headerRight {
@@ -14,7 +16,10 @@
     flex-direction: row;
     gap: 80px;
 }
-
 .headerHref {
+    padding-bottom: 1em;
+}
 
+.headerHref:hover {
+    text-decoration: underline;
 }

@@ -4,43 +4,11 @@ import { getStroke } from "perfect-freehand";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./Canva.module.css";
-
+import { useAtom } from "jotai";
+import { savedDrawingAtom, userAtom } from "../../utils/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
-const options = {
-  size: 20,
-  thinning: 0.6,
-  smoothing: 0.5,
-  streamline: 0.5,
-  easing: (t) => t,
-  start: {
-    taper: 85,
-    easing: (t) => t,
-    cap: true,
-  },
-  end: {
-    taper: 85,
-    easing: (t) => t,
-    cap: true,
-  },
-};
-
-function getSvgPathFromStroke(stroke) {
-  if (!stroke.length) return "";
-
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length];
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
-      return acc;
-    },
-    ["M", ...stroke[0], "Q"]
-  );
-
-  d.push("Z");
-  return d.join(" ");
-}
+import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
 
 export default function Canvas() {
   // button
@@ -49,6 +17,8 @@ export default function Canvas() {
 
   // change to more efficent method
   const [points, setPoints] = useState([]);
+  const [savedDrawing, setSavedDrawing] = useAtom(savedDrawingAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [s, setS] = useState([]);
   const [gestureInfo, setGestureInfo] = useState([
     [0, 0],
@@ -63,7 +33,6 @@ export default function Canvas() {
 
   const handleStrokeUpdate = (coords, gesture, rawPoint) => {
     setGestureInfo((prev) => [coords, gesture, prev[1], rawPoint]);
-    console.log(gesture);
   };
 
   useEffect(() => {
@@ -125,23 +94,35 @@ export default function Canvas() {
         setLoveTime((prev) => prev + 1);
       }
     }
-    console.log(gestureInfo[1]);
   }, [gestureInfo]);
+
+  const submitHandler = () => {
+    if (!user.username) {
+      alert("Please login to submit a drawing");
+      return router.push("/login");
+    }
+    setSavedDrawing(traversedPoints);
+    router.push("/new");
+  };
 
   return (
     <div className="z-50 absolute top-0 left-0 h-screen w-screen">
-      <button onClick={() => router.replace("/")} className={styles.noplay}>
+      <Link href={"/"} className={styles.noplay}>
         <FontAwesomeIcon icon={faArrowLeft} /> BACK
-      </button>
+      </Link>
       <div className="h-screen w-screen">
         <GestureRecognizer callback={handleStrokeUpdate} />
-        <svg style={{ touchAction: "none" }}>
+        <svg style={{ touchAction: "none" }} className={styles.playSvg}>
           {points &&
             s.map((p, ind) => {
               return <path d={p} key={ind} />;
             })}
         </svg>
-        <button className={styles.drawing_submit} type="submit" ref={buttonRef}>
+        <button
+          className={styles.drawing_submit}
+          onClick={submitHandler}
+          ref={buttonRef}
+        >
           SUBMIT
         </button>
       </div>

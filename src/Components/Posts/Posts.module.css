@@ -1,0 +1,47 @@
+.postWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+    overflow: auto;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 600px;
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+    z-index: 99;
+}
+
+.postHeader {
+    width: 90%;
+    height: 50px;
+    background-color: white;
+    font-size: 15px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.drawing {
+    width: 90%;
+    height: 400px;
+    background-color: white;
+}
+
+.description {
+    width: 90%;
+    height: 80px;
+    background-color: white;
+    padding-left: 10px;
+    padding-top: 5px;
+}

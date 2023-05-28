@@ -47,3 +47,9 @@
     width: 100%;
     margin-top: 2em;
 }
+
+.signupForm h1 {
+    color: #46d0ce;
+    font-size: x-large;
+    margin: auto;
+}

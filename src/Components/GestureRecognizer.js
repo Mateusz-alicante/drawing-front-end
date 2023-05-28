@@ -18,7 +18,6 @@ export default ({ callback }) => {
   const [gestureRecEl, setGestureRecEl] = useState(null);
   const [lastVideoTimeStore, setLastVideoTimeStore] = useState(-1);
   const container = useRef(null);
-  const router = useRouter();
 
   const handleOnChange = (result) => {
     const index = result.landmarks[0][1];
