@@ -38,7 +38,7 @@ export default () => {
   const postSubmit = async (fv) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:8000/createPost`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/createPost`,
         {
           description: fv.description,
           image: savedDrawing,

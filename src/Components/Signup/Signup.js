@@ -26,11 +26,14 @@ export default function Home() {
   const registerSubmit = async (fv) => {
     try {
       setLoading(true);
-      const { data } = await axios.post(`http://localhost:8000/register`, {
-        firstName: fv.firstName,
-        lastName: fv.lastName,
-        password: fv.password,
-      }); // send the data TO the backend post request, and then get the response BACK from the post result
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/register`,
+        {
+          firstName: fv.firstName,
+          lastName: fv.lastName,
+          password: fv.password,
+        }
+      ); // send the data TO the backend post request, and then get the response BACK from the post result
       console.log(data);
       const { message, ...rest } = data; // "rest" includes all fields other than message from the post action (eg. firstname, lastName, password, etc.)
       setUser(rest);

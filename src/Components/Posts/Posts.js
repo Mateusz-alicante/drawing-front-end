@@ -22,11 +22,14 @@ export default function Posts() {
 
   const getAllPosts = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8000/getAllPosts", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getAllPosts`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       setPosts(data);
       setLoading(false);
     } catch (error) {
@@ -44,7 +47,7 @@ export default function Posts() {
             {post?.user.firstName} {post?.description}
           </h1>
           <div className={style.drawingContainer}>
-            <Drawing renderProgressively={true} data={post?.image} />
+            <Drawing renderProgressively={true} data={post.image} />
           </div>
           <h3>{post?.user.lastName}</h3>
         </div>

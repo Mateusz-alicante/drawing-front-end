@@ -24,9 +24,12 @@ export default function People() {
   const getSelf = async () => {
     try {
       console.log(user.username);
-      const { data } = await axios.get("http://localhost:8000/getSelf", {
-        params: { user: user.username },
-      });
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getSelf`,
+        {
+          params: { user: user.username },
+        }
+      );
       setSelf(data);
     } catch (e) {
       console.log(e);
@@ -35,7 +38,9 @@ export default function People() {
 
   const getPeople = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8000/getPeople");
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getPeople`
+      );
       console.log(data);
       setPeople(data.people);
     } catch (error) {
@@ -54,7 +59,7 @@ export default function People() {
     if (user.friends?.includes(person._id)) {
       try {
         await axios.post(
-          `http://localhost:8000/unFriend`,
+          `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/unFriend`,
           { id: person._id },
           {
             headers: {
@@ -69,7 +74,7 @@ export default function People() {
     } else {
       try {
         await axios.post(
-          `http://localhost:8000/addFriend`,
+          `${process.env.REACT_APP_BACKEND}/addFriend`,
           { id: person._id },
           {
             headers: {

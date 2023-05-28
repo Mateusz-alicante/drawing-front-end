@@ -42,8 +42,8 @@ export default ({ data, renderProgressively = false }) => {
       ...options,
       size: (20 / window.innerHeight) * container.current.clientHeight,
     };
-    if (!data) return router.push("/play");
     const consider = renderProgressively ? toRender : data;
+    console.log(consider);
     const points = consider.map((point) =>
       point.map((p) => ({
         x: p[0] * container.current.clientWidth,
