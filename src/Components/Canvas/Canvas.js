@@ -7,8 +7,9 @@ import styles from "./Canva.module.css";
 import { useAtom } from "jotai";
 import { savedDrawingAtom, userAtom } from "../../utils/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
+import LearnPopUp from "../LearnPopUp/LearnPopUp";
 
 export default function Canvas() {
   // button
@@ -20,6 +21,7 @@ export default function Canvas() {
   const [savedDrawing, setSavedDrawing] = useAtom(savedDrawingAtom);
   const [user, setUser] = useAtom(userAtom);
   const [s, setS] = useState([]);
+  const [showPopUp, setShowPopUp] = useState(false);
   const [gestureInfo, setGestureInfo] = useState([
     [0, 0],
     undefined,
@@ -107,6 +109,7 @@ export default function Canvas() {
 
   return (
     <div className="z-50 absolute top-0 left-0 h-screen w-screen">
+      <LearnPopUp show={showPopUp} setShow={setShowPopUp} />
       <Link href={"/"} className={styles.noplay}>
         <FontAwesomeIcon icon={faArrowLeft} /> BACK
       </Link>
@@ -118,13 +121,22 @@ export default function Canvas() {
               return <path d={p} key={ind} />;
             })}
         </svg>
-        <button
-          className={styles.drawing_submit}
-          onClick={submitHandler}
-          ref={buttonRef}
-        >
-          SUBMIT
-        </button>
+        <div>
+          <button
+            onClick={() => setShowPopUp(true)}
+            className={styles.learnButton}
+          >
+            <FontAwesomeIcon icon={faInfoCircle} />
+            <p>Learn</p>
+          </button>
+          <button
+            className={styles.drawing_submit}
+            onClick={submitHandler}
+            ref={buttonRef}
+          >
+            SUBMIT
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,39 @@
+.peopleList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #232323;
+    color: white;
+    position: relative;
+    z-index: 99;
+    padding-left: 90px;
+    height: 100vh;
+    padding-top: 30px;
+}
+
+.people {
+    background-color: grey;
+    padding: 15px;
+    margin-right: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.peopleName {
+    font-size: 30px;
+}
+
+.addFriend {
+    background-color: rgb(35,35,35);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 160px;
+}
+
+.addFriend:hover {
+    background-color: grey;
+    border: 2px solid rgb(35,35,35);
+    color: black;
+    font-weight: 600;
+}

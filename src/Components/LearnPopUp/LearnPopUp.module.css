@@ -1,0 +1,52 @@
+.outerContainer {
+    position:fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    z-index: 100000000;
+}
+
+.container {
+    position: relative;
+    height: 90vh;
+    width: 90vw;
+    margin: auto;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: rgb(35,35,35);
+    border: solid 5px #63bdf5;
+    border-radius: 1em;
+    padding: 1em;
+    color: #63bdf5;
+}
+
+.singleContainer h1 {
+    font-size: 2em;
+    text-decoration: underline;
+}
+
+.singleContainer h2 {
+    font-size: 1.5em;
+    text-decoration: underline;
+}
+
+.button {
+    padding: 0.8em;
+    font-size: 1.5em;
+    width: 20%;
+    border: solid 5px #63bdf5;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1em;
+}
+
+.button:hover {
+    background-color: #63bdf5;
+    color: rgb(35, 35, 35);
+    border-color: #63bdf5;
+}

@@ -7,12 +7,16 @@ import axios from "axios";
 import style from "./Posts.module.css";
 import Drawing from "../../Components/Drawing/Drawing";
 import { useState } from "react";
+import Loader from "../Loader/Loader";
 
 export default function Posts() {
   const [user, setUser] = useAtom(userAtom);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
+    setLoading(true);
     getAllPosts();
   }, [user]);
 
@@ -24,25 +28,25 @@ export default function Posts() {
         },
       });
       setPosts(data);
-      console.log(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      router.push("/");
     }
   };
 
   return (
     <div className={style.postWrapper}>
+      <Loader show={loading} />
       {posts.map((post, ind) => (
         <div className={style.post} key={ind}>
-          <div className={style.postHeader}>
-            <div className={style.postName}>
-              {post?.user.firstName} {post?.user.lastName}
-            </div>
+          <h1>
+            {post?.user.firstName} {post?.description}
+          </h1>
+          <div className={style.drawingContainer}>
+            <Drawing renderProgressively={true} data={post?.image} />
           </div>
-          <div className={style.drawing}>
-            <Drawing data={post?.image} />
-          </div>
-          <div className={style.description}>{post?.description}</div>
+          <h3>{post?.user.lastName}</h3>
         </div>
       ))}
     </div>

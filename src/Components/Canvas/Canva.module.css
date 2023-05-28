@@ -58,3 +58,30 @@
     z-index: -1;
     fill: #63bdf5;
   }
+
+  .learnButton {
+    color: #46d0ce;
+    position: absolute;
+    top: 30px;
+    right: 80px;
+    font-size: 25px;
+    letter-spacing: 6px;
+    cursor: pointer;
+    z-index: 50;
+    text-decoration: none;
+    display: flex;
+  }
+
+  .learnButton svg {
+    padding: 0.25em;
+    padding-right: 0.5em;
+    color: #46d0ce;
+  }
+
+  .learnButton p {
+    color: #46d0ce;
+  }
+
+  .learnButton {
+    filter: brightness(1.3);
+  }

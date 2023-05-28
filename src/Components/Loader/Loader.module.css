@@ -1,0 +1,36 @@
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 10000;
+}
+
+.label {
+    color: #63bdf5;
+    font-size: 2em;
+    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container span {
+    width: 100%;
+    margin: auto;
+    margin: 1em;
+}
+
+.innerContainer {
+    width: 15%;
+    padding: 1em;
+    margin: auto;
+    background-color: rgb(35, 35, 35);
+    border: solid 5px #63bdf5;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+}

@@ -20,8 +20,6 @@ export default function RootLayout({
 }) {
   const router = useRouter();
   const [user, setUser]: any = useAtom(userAtom);
-  console.log(user);
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -39,6 +37,9 @@ export default function RootLayout({
                 </Link>
                 <Link href="/posts" className={styles.headerHref}>
                   POSTS
+                </Link>
+                <Link href="/people" className={styles.headerHref}>
+                  PEOPLE
                 </Link>
               </div>
             ) : (

@@ -13,15 +13,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 
+import Loader from "../Loader/Loader";
+
 export default function Home() {
   const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useAtom(userAtom);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const registerSubmit = async (fv) => {
     try {
+      setLoading(true);
       const { data } = await axios.post(`http://localhost:8000/register`, {
         firstName: fv.firstName,
         lastName: fv.lastName,
@@ -30,6 +34,7 @@ export default function Home() {
       console.log(data);
       const { message, ...rest } = data; // "rest" includes all fields other than message from the post action (eg. firstname, lastName, password, etc.)
       setUser(rest);
+      setLoading(false);
       setError("");
       router.push("/posts");
     } catch (error) {
@@ -62,6 +67,7 @@ export default function Home() {
 
   return (
     <div>
+      <Loader show={loading} />
       <div className={styles.signupCard}>
         <div hidden={!submitted} className="alert alert-primary" role="alert">
           {message}

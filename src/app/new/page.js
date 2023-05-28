@@ -50,9 +50,7 @@ export default () => {
           },
         }
       ); // send the data TO the backend post request, and then get the response BACK from the post result
-      console.log(data);
       const { message, ...rest } = data; // "rest" includes all fields other than message from the post action (eg. firstname, lastName, password, etc.)
-      setUser(rest);
       setError("");
       router.push("/posts");
     } catch (error) {

@@ -4,44 +4,51 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
-    margin-top: 40px;
+    width: 65%;
+    margin: 3 auto;
     overflow: auto;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 99;
 }
 
 .post {
     display: flex;
     flex-direction: column;
-    width: 600px;
-    height: 600px;
-    background-color: black;
+    width: 30em;
+    height: 30em;
+    background-color: rgb(35, 35, 35);
     align-items: center;
     justify-content: center;
-    gap: 15px;
     position: relative;
+    margin: 3em;
     z-index: 99;
+    border: solid 5px #63bdf5;
+    border-radius: 1em;
+    transition: all .2s ease-in-out;
 }
 
-.postHeader {
-    width: 90%;
-    height: 50px;
-    background-color: white;
-    font-size: 15px;
-    padding-left: 10px;
+.post:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 15px 25px;
+    transform: scale(1.2);
+}
+
+.post h1 {
+    color:#63bdf5;
+    height: 5%;
+    font-size: x-large;
+}
+
+.post h3 {
+    color:#63bdf5;
+    height: 5%;
+    width: 100%;
+    padding: 0 0.5em;
+    justify-content: right;
     display: flex;
-    align-items: center;
-    font-weight: 600;
 }
 
-.drawing {
-    width: 90%;
-    height: 400px;
-    background-color: white;
-}
-
-.description {
-    width: 90%;
-    height: 80px;
-    background-color: white;
-    padding-left: 10px;
-    padding-top: 5px;
+.drawingContainer {
+    width: 100%;
+    height: 90%;
 }
