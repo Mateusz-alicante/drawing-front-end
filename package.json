@@ -28,6 +28,7 @@
     "perfect-freehand": "^1.2.0",
     "postcss": "8.4.23",
     "react": "18.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",
     "react-spinners": "^0.13.8",
     "react-webcam": "^7.0.1",

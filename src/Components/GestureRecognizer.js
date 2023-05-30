@@ -6,35 +6,85 @@ import {
   GestureRecognizer,
   GestureRecognizerResult,
 } from "@mediapipe/tasks-vision";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faCircle } from "@fortawesome/free-solid-svg-icons";
+
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
+const marginFunc = (x, y) => {
+  const newX = (x - 0.5) * 1.3 + 0.5;
+  const newY = (y - 0.5) * 1.3 + 0.5;
+  return [1 - newX, newY];
+};
 
 let gestureRecognizer = null;
 let video = null;
 let lastVideoTime = -1;
 
-export default ({ callback }) => {
+export default ({ callback, percentageLoader }) => {
   const [pointCoords, setPointCoords] = useState([0, 0]);
   const [specialRedirect, setSpecialRedirect] = useState(false);
   const [videoEl, setVideoEl] = useState(null);
   const [gestureRecEl, setGestureRecEl] = useState(null);
   const [lastVideoTimeStore, setLastVideoTimeStore] = useState(-1);
+  const [gesture, setGesture] = useState("Closed_Fist");
   const container = useRef(null);
+
+  const color = () => {
+    switch (gesture) {
+      case "Closed_Fist":
+        return "yellow";
+      case "Open_Palm":
+        return "#1955e0";
+      default:
+        return "red";
+    }
+  };
+
+  const icon = () => {
+    switch (gesture) {
+      case "Closed_Fist":
+        return <FontAwesomeIcon icon={faCircle} />;
+      case "Open_Palm":
+        return <FontAwesomeIcon icon={faPen} />;
+
+      case "ILoveYou":
+      case "Thumb_Down":
+        return (
+          <div style={{ height: "10%", width: "10%" }}>
+            <CircularProgressbar
+              value={percentageLoader}
+              styles={buildStyles({
+                pathColor: gesture == "Thumb_Down" ? "orange" : "red",
+                pathTransitionDuration: 0,
+              })}
+            />
+          </div>
+        );
+      default:
+        <div>*</div>;
+    }
+  };
 
   const handleOnChange = (result) => {
     const index = result.landmarks[0][1];
     const depth = result.worldLandmarks[0][1].z * 10;
     const containerElement = container.current;
+    if (!containerElement) return;
+    const [x, y] = marginFunc(index.x, index.y);
     setPointCoords([
-      (1 - index.x) * containerElement.clientWidth,
-      index.y * containerElement.clientHeight,
+      x * containerElement.clientWidth,
+      y * containerElement.clientHeight,
     ]);
     callback(
       [
-        (1 - index.x) * containerElement.clientWidth,
-        index.y * containerElement.clientHeight,
+        x * containerElement.clientWidth,
+        y * containerElement.clientHeight,
         depth,
       ],
       result.gestures[0][0].categoryName,
-      [1 - index.x, index.y, depth]
+      [x, y, depth]
     );
   };
 
@@ -75,11 +125,12 @@ export default ({ callback }) => {
       setLastVideoTimeStore(lastVideoTime);
       const result = gestureRecEl.recognizeForVideo(videoEl, nowInMs);
       if (result.landmarks.length > 0) {
+        setGesture(result.gestures[0][0].categoryName);
         handleOnChange(result);
       }
     }
 
-    requestAnimationFrame(predict);
+    setTimeout(() => requestAnimationFrame(predict), 25);
   };
 
   useEffect(predict, [specialRedirect]);
@@ -87,6 +138,8 @@ export default ({ callback }) => {
   useEffect(() => {
     setup();
   }, []);
+
+  useEffect(() => console.log(percentageLoader), [percentageLoader]);
 
   return (
     <div className="w-full h-full">
@@ -97,10 +150,10 @@ export default ({ callback }) => {
           style={{
             top: pointCoords[1],
             left: pointCoords[0],
-            color: "#63bdf5",
+            color: color(),
           }}
         >
-          *
+          {icon()}
         </div>
       </div>
     </div>

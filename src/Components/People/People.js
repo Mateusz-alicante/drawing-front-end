@@ -16,24 +16,11 @@ export default function People() {
     setFriendship(user.friends);
   }, [user.friends]);
 
+  console.log(user.friends);
+
   const addFriendHandler = async () => {
     setFriendship({ ...friendship });
     await addFriend(profileId, user.token);
-  };
-
-  const getSelf = async () => {
-    try {
-      console.log(user.username);
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getSelf`,
-        {
-          params: { user: user.username },
-        }
-      );
-      setSelf(data);
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const getPeople = async () => {
@@ -41,7 +28,6 @@ export default function People() {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getPeople`
       );
-      console.log(data);
       setPeople(data.people);
     } catch (error) {
       console.log(error.response.data.message);
@@ -49,16 +35,13 @@ export default function People() {
   };
 
   useEffect(() => {
-    getSelf();
     getPeople();
   }, []);
 
-  console.log(friendship);
-
   const handleFriendChange = async (person) => {
-    if (user.friends?.includes(person._id)) {
-      try {
-        await axios.post(
+    try {
+      if (user.friends?.includes(person._id)) {
+        const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/unFriend`,
           { id: person._id },
           {
@@ -67,14 +50,13 @@ export default function People() {
             },
           }
         );
-        return "ok";
-      } catch (error) {
-        return error.response.data.message;
-      }
-    } else {
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_BACKEND}/addFriend`,
+        setFriendship(data.result.friends);
+        setUser((prev) => {
+          return { ...prev, friends: data.result.friends };
+        });
+      } else {
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/addFriend`,
           { id: person._id },
           {
             headers: {
@@ -82,10 +64,13 @@ export default function People() {
             },
           }
         );
-        return "ok";
-      } catch (error) {
-        return error.response.data.message;
+        setFriendship(data.result.friends);
+        setUser((prev) => {
+          return { ...prev, friends: data.result.friends };
+        });
       }
+    } catch (error) {
+      return error.response.data.message;
     }
   };
 

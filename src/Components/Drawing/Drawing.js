@@ -22,15 +22,15 @@ export default ({ data, renderProgressively = false }) => {
   };
 
   const addToRender = () => {
-    if (data.length === 0) return;
-    if (data[0].length === 0) {
+    if (data?.length === 0) return;
+    if (data && data[0].length === 0) {
       data.shift();
       setToRender((p) => [...p, []]);
       return addToRender();
     } else {
       setToRender((p) => {
         const lastInRender = p.pop();
-        lastInRender.push(data[0].shift());
+        if (data) lastInRender.push(data[0].shift());
         return [...p, lastInRender];
       });
     }
@@ -43,7 +43,6 @@ export default ({ data, renderProgressively = false }) => {
       size: (20 / window.innerHeight) * container.current.clientHeight,
     };
     const consider = renderProgressively ? toRender : data;
-    console.log(consider);
     const points = consider.map((point) =>
       point.map((p) => ({
         x: p[0] * container.current.clientWidth,
@@ -59,7 +58,6 @@ export default ({ data, renderProgressively = false }) => {
   const checkIfInViewPort = () => {
     if (isInViewPort()) {
       addToRender();
-      console.log("new in viewport");
     } else {
       setTimeout(checkIfInViewPort, 50);
     }

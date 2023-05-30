@@ -25,7 +25,7 @@ export default function Home() {
 
   const router = useRouter();
 
-  const registerSubmit = async (fv) => {
+  const loginSubmit = async (fv) => {
     try {
       setLoading(true);
       console.log(`${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/login`);
@@ -46,8 +46,6 @@ export default function Home() {
     }
   };
 
-  console.log(user);
-
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -56,7 +54,7 @@ export default function Home() {
     onSubmit: () => {
       setMessage("Form submitted");
       setSubmitted(true);
-      registerSubmit(formik.values);
+      loginSubmit(formik.values);
     },
     validationSchema: yup.object({
       username: yup.string().required("username is required"),

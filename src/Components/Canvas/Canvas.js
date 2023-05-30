@@ -11,6 +11,9 @@ import { faArrowLeft, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
 import LearnPopUp from "../LearnPopUp/LearnPopUp";
 
+const ThumbDownTime = 10;
+const ILoveYouTime = 25;
+
 export default function Canvas() {
   // button
   const buttonRef = useRef(null);
@@ -30,6 +33,7 @@ export default function Canvas() {
   ]);
   const [traversedPoints, setTraversedPoints] = useState([[]]);
   const [loveTime, setLoveTime] = useState(0);
+  const [downTime, setDownTime] = useState(0);
 
   const stroke = getStroke(points, options);
 
@@ -72,29 +76,28 @@ export default function Canvas() {
         return [...prevS, getSvgPathFromStroke(stroke)];
       });
       setPoints([]);
-    } else if (
-      gestureInfo[1] === "Thumb_Down" &&
-      gestureInfo[2] !== "Thumb_Down"
-    ) {
-      setS((prevS) => {
-        prevS.pop();
-        return [...prevS];
-      });
-      setTraversedPoints((prevTraversedPoints) => {
-        prevTraversedPoints.pop();
-        if (prevTraversedPoints.length == 0) {
-          prevTraversedPoints = [[]];
-        }
-        return prevTraversedPoints;
-      });
+    } else if (gestureInfo[1] === "Thumb_Down") {
+      if (downTime > ThumbDownTime) {
+        setS((prevS) => {
+          prevS.pop();
+          return [...prevS];
+        });
+        setDownTime([[]]);
+        setDownTime(0);
+      } else {
+        setDownTime((prev) => prev + 1);
+      }
     } else if (gestureInfo[1] === "ILoveYou") {
-      if (loveTime > 50) {
+      if (loveTime > ILoveYouTime) {
         setS([]);
         setTraversedPoints([[]]);
         setLoveTime(0);
       } else {
         setLoveTime((prev) => prev + 1);
       }
+    } else {
+      setDownTime(0);
+      setLoveTime(0);
     }
   }, [gestureInfo]);
 
@@ -114,7 +117,12 @@ export default function Canvas() {
         <FontAwesomeIcon icon={faArrowLeft} /> BACK
       </Link>
       <div className="h-screen w-screen">
-        <GestureRecognizer callback={handleStrokeUpdate} />
+        <GestureRecognizer
+          percentageLoader={
+            (downTime / ThumbDownTime) * 100 || (loveTime / ILoveYouTime) * 100
+          }
+          callback={handleStrokeUpdate}
+        />
         <svg style={{ touchAction: "none" }} className={styles.playSvg}>
           {points &&
             s.map((p, ind) => {
