@@ -157,4 +157,3 @@ export default ({ callback, percentageLoader }) => {
     </div>
   );
 };
-H;
