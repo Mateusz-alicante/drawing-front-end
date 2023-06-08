@@ -81,9 +81,7 @@ export default function Posts() {
       >
         {posts.map((post, ind) => (
           <div className={style.post} key={post._id}>
-            <h1>
-              {post?.user.firstName} {post?.description}
-            </h1>
+            <h1>{post?.description}</h1>
             <div className={style.drawingContainer}>
               <Drawing
                 renderProgressively={true}
@@ -91,7 +89,9 @@ export default function Posts() {
                 redrawOnClick={true}
               />
             </div>
-            <h3>{post?.user.lastName}</h3>
+            <h3>
+              {post?.user.firstName} {post?.user.lastName}
+            </h3>
           </div>
         ))}
         {posts.length == 0 && !loading && (
