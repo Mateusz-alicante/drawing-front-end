@@ -26,6 +26,10 @@ export default function Home() {
   const registerSubmit = async (fv) => {
     try {
       setLoading(true);
+      console.log(
+        "Sending request to: ",
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/register`
+      );
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/register`,
         {
