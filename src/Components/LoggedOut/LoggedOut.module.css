@@ -1,0 +1,9 @@
+.logout {
+    position: absolute;
+    top: 30%;
+    right: 50%;
+    transform: translate(50%, 30%);
+    font-size: 100px;
+    color: aqua;
+    z-index: 99;
+}

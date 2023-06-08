@@ -9,7 +9,9 @@ export default ({ show }) => {
     >
       <div className={styles.innerContainer}>
         <h1 className={styles.label}>Loading</h1>
-        <CircleLoader className={styles.spinner} color="#63bdf5" size={100} />
+        <div className={styles.loaderContainer}>
+          <CircleLoader className={styles.spinner} color="#63bdf5" size={85} />
+        </div>
       </div>
     </div>
   );

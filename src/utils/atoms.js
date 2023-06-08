@@ -1,5 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import { atom } from "jotai";
 
-export const savedDrawingAtom = atom(undefined);
-export const userAtom = atom({});
+export const savedDrawingAtom = atomWithStorage(undefined);
+export const userAtom = atomWithStorage({});
+export const pendingDrawingAtom = atomWithStorage(false);

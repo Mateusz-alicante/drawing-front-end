@@ -1,11 +1,17 @@
+.formBody {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .signupCard {
     width: 35%;
-    margin: 3em auto;
-    background-color: rgb(35, 35, 35);
-    padding: 2em;
+    background-color: rgb(40, 40, 40);
+    padding: 1em;
     border-radius: 1em;
     position: relative;
-    z-index: 87
+    z-index: 87;
 }
 
 .textDanger {
@@ -13,8 +19,7 @@
 }
 
 .formInput {
-    padding: 0.25em;
-    font-size: large;
+    padding: 0.2em;
     color: black;
 }
 
@@ -31,6 +36,7 @@
 }
 
 .mb3 input {
+    width: 100%;
     height: 3em;
     border-radius: 0.5em;
 }
@@ -45,5 +51,30 @@
     cursor: pointer;
     margin: 1em 0;
     width: 100%;
-    margin-top: 2em;
+    margin-top: 1em;
+}
+
+.redirectButton {
+    color: #46d0ce;
+    background-color: rgb(35, 35, 35);
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: large;
+    cursor: pointer;
+    margin: 1em 0;
+    width: 100%;
+    margin-top: 1em;
+    border: 3px solid #46d0ce;
+}
+
+.redirectButton:hover {
+    color: rgb(35, 35, 35);
+    background-color: #46d0ce;
+}
+
+.names {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+    width: 100%;
 }

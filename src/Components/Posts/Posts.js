@@ -8,29 +8,40 @@ import style from "./Posts.module.css";
 import Drawing from "../../Components/Drawing/Drawing";
 import { useState } from "react";
 import Loader from "../Loader/Loader";
+import InfiniteScroll from "react-infinite-scroller";
+
+const PostRequestLimit = 15;
+
+const PostOptionsArray = [
+  ["Public Posts", "public"],
+  ["My Friends", "friends"],
+  ["Only Mine", "private"],
+];
 
 export default function Posts() {
   const [user, setUser] = useAtom(userAtom);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [postOption, setPostOption] = useState("public");
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [page, setPage] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
+  const loadPosts = async () => {
+    if (loading) return;
     setLoading(true);
-    getAllPosts();
-  }, [user]);
-
-  const getAllPosts = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getAllPosts`,
+        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getPosts?page=${page}&limit=${PostRequestLimit}&option=${postOption}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
-      setPosts(data);
+      setPosts((prevPosts) => [...prevPosts, ...data.posts]);
+      setHasMorePosts(data.hasMore);
+      setPage((prevPage) => prevPage + 1);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,18 +51,56 @@ export default function Posts() {
 
   return (
     <div className={style.postWrapper}>
-      <Loader show={loading} />
-      {posts.map((post, ind) => (
-        <div className={style.post} key={ind}>
-          <h1>
-            {post?.user.firstName} {post?.description}
-          </h1>
-          <div className={style.drawingContainer}>
-            <Drawing renderProgressively={true} data={post.image} />
+      <div className={style.postOptionContainer}>
+        {PostOptionsArray.map(([label, value]) => (
+          <div className={style.postOptionSingleOption}>
+            <button
+              className={
+                value == postOption
+                  ? style.postOptionActiveButton
+                  : style.postOptionInactiveButton
+              }
+              onClick={() => {
+                setPostOption(value);
+                setPosts([]);
+                setHasMorePosts(true);
+                setPage(0);
+              }}
+            >
+              {label}
+            </button>
           </div>
-          <h3>{post?.user.lastName}</h3>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadPosts}
+        hasMore={hasMorePosts}
+        loader={<Loader show={loading} />}
+      >
+        {posts.map((post, ind) => (
+          <div className={style.post} key={post._id}>
+            <h1>
+              {post?.user.firstName} {post?.description}
+            </h1>
+            <div className={style.drawingContainer}>
+              <Drawing
+                renderProgressively={true}
+                originalData={post.image}
+                redrawOnClick={true}
+              />
+            </div>
+            <h3>{post?.user.lastName}</h3>
+          </div>
+        ))}
+        {posts.length == 0 && !loading && (
+          <div className={style.emptyContainer}>
+            <h1>No posts here yet!</h1>
+            <h3>Create some drawings and encourage your friends to join</h3>
+          </div>
+        )}
+      </InfiniteScroll>
     </div>
   );
 }

@@ -1,39 +1,95 @@
 .peopleList {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #232323;
-    color: white;
+    width: 80%;
+    z-index: 2;
     position: relative;
-    z-index: 99;
-    padding-left: 90px;
-    height: 100vh;
-    padding-top: 30px;
+    margin: auto;
 }
 
 .people {
-    background-color: grey;
-    padding: 15px;
-    margin-right: 90px;
+    background-color: rgb(35, 35, 35);
+    border-radius: 1em;
+    border: 3px solid #46d0ce;
+    color: #46d0ce;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    margin: 2em 0;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+
+.imageFrame {
+    position: abosolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 10em;
+}
+
+.pfp {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.friendsLabel {
+    font-size: xx-large;
+    color: #46d0ce;
+    margin-top: 2em;
+}
+
+
+.peopleContainer {
+    width: 90vw;
+    z-index: 2;
+    position: relative;
+    margin: auto;
+    padding-bottom: 10em;
+}
+
+.basicInfoContainer {
+    position: relative;
+    margin-left: 2em;
+    align-items: center;
 }
 
 .peopleName {
-    font-size: 30px;
+    font-size: xx-large;
+    color: #46d0ce;
 }
+
 
 .addFriend {
-    background-color: rgb(35,35,35);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 160px;
+    background-color: rgb(35, 35, 35);
+    border-radius: 1em;
+    padding: 0.5em;
+    width: 10em;
+    margin-top: 0.5em;
+    border: 3px solid #46d0ce;
 }
 
-.addFriend:hover {
-    background-color: grey;
-    border: 2px solid rgb(35,35,35);
-    color: black;
-    font-weight: 600;
+.deleteFriend {
+    background-color: rgb(35, 35, 35);
+    border-radius: 1em;
+    padding: 0.5em;
+    width: 10em;
+    margin-top: 0.5em;
+    border: 3px solid rgb(255, 78, 78);
+    color: rgb(255, 78, 78);
+}
+
+.buttonContainer {
+    height: 5em;
+    justify-self: end;
+    padding-right: 1em;
+}
+
+.rightContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.singeInfoContainer h2 {
+    padding-top: 0.5em;
+    text-decoration: underline;
 }

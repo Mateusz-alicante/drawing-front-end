@@ -5,7 +5,8 @@
     padding: 2em;
     border-radius: 1em;
     position: relative;
-    z-index: 87
+    z-index: 87;
+    border: 3px solid #46d0ce;
 }
 
 .textDanger {
@@ -25,7 +26,6 @@
 }
 
 .mb3 label {
-    
     font-size: large;
     padding: 0.75em 1.25em 0 0;
 }
@@ -52,4 +52,26 @@
     color: #46d0ce;
     font-size: x-large;
     margin: auto;
+}
+
+.radioInput {
+    color: #46d0ce;
+}
+
+.privacyContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.formLabel {
+    font-size: large;
+    padding: 0.75em 1.25em 0 0;
+}
+
+.privacySingleRadio {
+    color: red;
+}
+
+.outerContainer {
+    padding-bottom: 3em;
 }

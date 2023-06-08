@@ -23,9 +23,10 @@ export default () => {
   const formik = useFormik({
     initialValues: {
       description: "",
+      privacy: "public",
     },
     onSubmit: () => {
-      console.log();
+      console.log(formik.values);
       setMessage("Form submitted");
       setSubmitted(true);
       postSubmit(formik.values);
@@ -41,6 +42,7 @@ export default () => {
         `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/createPost`,
         {
           description: fv.description,
+          privacy: fv.privacy,
           image: savedDrawing,
           user: user,
         },
@@ -62,8 +64,11 @@ export default () => {
     setRenderImg(true);
   }, []);
 
+  const handleRadioButtons = (e) =>
+    formik.setFieldValue("privacy", e.target.value);
+
   return (
-    <div>
+    <div className={styles.outerContainer}>
       <div className={styles.signupCard}>
         <div hidden={!submitted} className="alert alert-primary" role="alert">
           {message}
@@ -72,8 +77,8 @@ export default () => {
         <form className={styles.signupForm} onSubmit={formik.handleSubmit}>
           <h1>Register new Drawing:</h1>
           <div className={styles.mb3}>
-            <label htmlFor="description" className="form-label">
-              Title:
+            <label htmlFor="description" className={styles.formLabel}>
+              <h1 className={styles.formLabel}>Title:</h1>
             </label>
             <input
               type="description"
@@ -92,13 +97,49 @@ export default () => {
             )}
           </div>
           <div className="w-full h-60 mx-0 my-5">
-            {renderImg && <Drawing data={savedDrawing} />}
+            {renderImg && <Drawing originalData={savedDrawing} />}
           </div>
-          <button
-            type="submit"
-            onClick={() => console.log("pressed")}
-            className={styles.button}
-          >
+          <div className={styles.radioInput}>
+            <fieldset>
+              <div className={styles.privacyContainer}>
+                <legend>
+                  <h1 className={styles.formLabel}>
+                    Who is allowed to see the post?
+                  </h1>
+                </legend>
+                <label>
+                  <input
+                    type="radio"
+                    name="radio"
+                    value="public"
+                    checked
+                    className={styles.privacySingleRadio}
+                    onChange={handleRadioButtons}
+                  />{" "}
+                  Everyone
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="radio"
+                    value="friends"
+                    onChange={handleRadioButtons}
+                  />{" "}
+                  Friends
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="radio"
+                    value="private"
+                    onChange={handleRadioButtons}
+                  />{" "}
+                  Just me
+                </label>
+              </div>
+            </fieldset>
+          </div>
+          <button type="submit" className={styles.button}>
             SUBMIT!
           </button>
         </form>

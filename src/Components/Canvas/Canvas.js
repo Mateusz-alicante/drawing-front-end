@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./Canva.module.css";
 import { useAtom } from "jotai";
-import { savedDrawingAtom, userAtom } from "../../utils/atoms";
+import {
+  savedDrawingAtom,
+  userAtom,
+  pendingDrawingAtom,
+} from "../../utils/atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
@@ -22,6 +26,7 @@ export default function Canvas() {
   // change to more efficent method
   const [points, setPoints] = useState([]);
   const [savedDrawing, setSavedDrawing] = useAtom(savedDrawingAtom);
+  const [pendingDrawing, setPendingDrawing] = useAtom(pendingDrawingAtom);
   const [user, setUser] = useAtom(userAtom);
   const [s, setS] = useState([]);
   const [showPopUp, setShowPopUp] = useState(false);
@@ -104,6 +109,8 @@ export default function Canvas() {
   const submitHandler = () => {
     if (!user.username) {
       alert("Please login to submit a drawing");
+      setSavedDrawing(traversedPoints);
+      setPendingDrawing(true);
       return router.push("/login");
     }
     setSavedDrawing(traversedPoints);

@@ -1,7 +1,7 @@
 import styles from "./Signup.module.css";
 
 import { useState } from "react";
-import { userAtom } from "../../utils/atoms";
+import { userAtom, pendingDrawingAtom } from "../../utils/atoms";
 import { useAtom } from "jotai";
 
 import { useFormik } from "formik";
@@ -16,11 +16,11 @@ import { useRouter } from "next/navigation";
 import Loader from "../Loader/Loader";
 
 export default function Home() {
-  const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
+  const [pendingDrawing, setPendingDrawing] = useAtom(pendingDrawingAtom);
 
   const router = useRouter();
   const registerSubmit = async (fv) => {
@@ -32,14 +32,23 @@ export default function Home() {
           firstName: fv.firstName,
           lastName: fv.lastName,
           password: fv.password,
+          username: fv.username,
+          email: fv.email,
         }
       ); // send the data TO the backend post request, and then get the response BACK from the post result
       const { message, ...rest } = data; // "rest" includes all fields other than message from the post action (eg. firstname, lastName, password, etc.)
       setUser(rest);
       setLoading(false);
       setError("");
-      router.push("/posts");
+      if (pendingDrawing) {
+        setPendingDrawing(false);
+        router.push("/new");
+        return;
+      }
+      router.push("/people");
     } catch (error) {
+      setLoading(false);
+      console.log(error);
       setError(error.response.data.message); // response is from the post route in backend
     }
   };
@@ -49,15 +58,18 @@ export default function Home() {
       firstName: "",
       lastName: "",
       password: "",
+      email: "",
+      username: "",
     },
     onSubmit: () => {
-      setMessage("Form submitted");
       setSubmitted(true);
       registerSubmit(formik.values);
     },
     validationSchema: yup.object({
       firstName: yup.string().required("First name is required"),
       lastName: yup.string().required("Last name is required"),
+      email: yup.string().email().required("email is required"),
+      username: yup.string().required("username is required"),
       password: yup
         .string()
         .min(6, "Must be 6 digits or more")
@@ -66,54 +78,87 @@ export default function Home() {
   });
 
   return (
-    <div>
+    <div className={styles.formBody}>
       <Loader show={loading} />
       <div className={styles.signupCard}>
-        <div hidden={!submitted} className="alert alert-primary" role="alert">
-          {message}
-        </div>
-
         <form className={styles.signupForm} onSubmit={formik.handleSubmit}>
           <div className={styles.mb3}>
-            <label htmlFor="firstName" className="form-label">
-              First Name:
+            <label htmlFor="email" className="form-label">
+              Email:
             </label>
             <input
               type="text"
-              name="firstName"
+              name="email"
               className={styles.formInput}
-              placeholder="First Name"
-              value={formik.values.firstName}
+              placeholder="Email"
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.errors.firstName && (
-              <div>
-                <div className={styles.textDanger}>
-                  {formik.errors.firstName}
-                </div>
-              </div>
+            {formik.errors.email && (
+              <div className={styles.textDanger}>{formik.errors.email}</div>
             )}
+          </div>
+          <div className={styles.names}>
+            <div className={styles.mb3}>
+              <label htmlFor="firstName" className="form-label">
+                First Name:
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                className={styles.formInput}
+                placeholder="First Name"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.errors.firstName && (
+                <div>
+                  <div className={styles.textDanger}>
+                    {formik.errors.firstName}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={styles.mb3}>
+              <label htmlFor="lastName" className="form-label">
+                Last Name:
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                className={styles.formInput}
+                placeholder="Last Name"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.errors.lastName && (
+                <div className={styles.textDanger}>
+                  {formik.errors.lastName}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className={styles.mb3}>
-            <label htmlFor="lastName" className="form-label">
-              Last Name:
+            <label htmlFor="username" className="form-label">
+              Username:
             </label>
             <input
               type="text"
-              name="lastName"
+              name="username"
               className={styles.formInput}
-              placeholder="lastName"
-              value={formik.values.lastName}
+              placeholder="Username"
+              value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.errors.lastName && (
-              <div className={styles.textDanger}>{formik.errors.lastName}</div>
+            {formik.errors.username && (
+              <div className={styles.textDanger}>{formik.errors.username}</div>
             )}
           </div>
-
           <div className={styles.mb3}>
             <label htmlFor="password" className="form-label">
               Password:
@@ -135,6 +180,13 @@ export default function Home() {
           <button type="submit" className={styles.button}>
             SIGN UP!
           </button>
+          <button
+            className={styles.redirectButton}
+            onClick={() => router.push("/login")}
+          >
+            I have an account already
+          </button>
+          <span style={{ color: "red" }}>{error}</span>
         </form>
       </div>
     </div>

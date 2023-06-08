@@ -8,6 +8,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import Background from "../Components/Background/Background";
 import { useEffect } from "react";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,15 +23,22 @@ export default function RootLayout({
   const [user, setUser]: any = useAtom(userAtom);
   return (
     <html lang="en">
+      <Head>
+        <title>BlueDraw</title>
+        <meta property="og:title" content="BlueDraw" key="title" />
+      </Head>
       <body className={inter.className}>
-        <div className="bg-gray-800 min-h-screen">
+        <div
+          className="min-h-screen"
+          style={{ backgroundColor: "rgb(35, 35, 35)" }}
+        >
           <div className={styles.header}>
             <div className={styles.headerLeft}>
               <Link href="/" className={styles.headerHref}>
                 HOME
               </Link>
             </div>
-            {user.username ? (
+            {user?.username ? (
               <div className={styles.headerRight}>
                 <Link href="/play" className={styles.headerHref}>
                   PLAYGROUND
@@ -39,7 +47,16 @@ export default function RootLayout({
                   POSTS
                 </Link>
                 <Link href="/people" className={styles.headerHref}>
-                  PEOPLE
+                  PROFILE
+                </Link>
+                <Link
+                  href="/loggedout"
+                  className={styles.headerHref}
+                  onClick={() => {
+                    setUser({});
+                  }}
+                >
+                  LOG OUT
                 </Link>
               </div>
             ) : (

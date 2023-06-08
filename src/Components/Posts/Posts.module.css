@@ -9,7 +9,8 @@
     overflow: auto;
     margin-left: auto;
     margin-right: auto;
-    z-index: 99;
+    z-index: 2;
+    position: relative;
 }
 
 .post {
@@ -21,7 +22,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    margin: 3em;
+    margin: 4em;
     z-index: 99;
     border: solid 5px #63bdf5;
     border-radius: 1em;
@@ -29,8 +30,9 @@
 }
 
 .post:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 15px 25px;
-    transform: scale(1.2);
+    box-shadow: rgba(25, 25, 253, 0.5) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    transform: scale(1.15) rotate(3deg);
+    
 }
 
 .post h1 {
@@ -51,4 +53,56 @@
 .drawingContainer {
     width: 100%;
     height: 90%;
+}
+
+.postOptionInactiveButton, .postOptionActiveButton {
+    background-color: #46d0ce;
+    color: rgb(35, 35, 35);
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: x-large;
+    cursor: pointer;
+    margin: 1em 0;
+    width: 100%;
+    margin-top: 2em;
+    transition: all .2s ease-in-out;
+}
+
+.postOptionInactiveButton:hover {
+    padding: calc(0.5em - 3px) calc(1em - 3px);
+    background-color: rgb(35, 35, 35);
+    border: 3px solid #46d0ce;
+    color: #46d0ce;
+    transform: scale(1.1);
+}
+
+.postOptionActiveButton {
+    padding: calc(0.5em - 3px) calc(1em - 3px);
+    background-color: rgb(35, 35, 35);
+    border: 3px solid #46d0ce;
+    color: #46d0ce;
+    transform: scale(1.1);
+}
+
+
+.postOptionContainer {
+    z-index: 2;
+    display: flex;
+    justify-content: space-around;
+    min-width: 70vw;
+}
+
+.emptyContainer {
+    width: 100%;
+    background-color: rgb(35, 35, 35);
+    border: 3px solid #46d0ce;
+    border-radius: 1em;
+    padding: 2em;
+    color: #46d0ce;
+}
+
+.emptyContainer h1 {
+    font-size: xx-large;
+    margin: auto;
+   text-align: center;
 }

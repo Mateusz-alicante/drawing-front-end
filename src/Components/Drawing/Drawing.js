@@ -3,11 +3,18 @@ import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
 import { getStroke } from "perfect-freehand";
 import { useRouter } from "next/navigation";
 
-export default ({ data, renderProgressively = false }) => {
+export default ({
+  originalData,
+  renderProgressively = false,
+  redrawOnClick = false,
+}) => {
   const container = useRef(null);
+  const [data, setData] = useState(JSON.parse(JSON.stringify(originalData))); // This is the data that will be used to render the drawing
   const router = useRouter();
   const [toRender, setToRender] = useState([[]]);
   const [paths, setPaths] = useState([]);
+  const [imgError, setImgError] = useState(false); // This will be used to show a message if there is an error loading the image
+  const [reRender, setReRender] = useState(false);
 
   const isInViewPort = () => {
     if (!container.current) return false;
@@ -43,6 +50,7 @@ export default ({ data, renderProgressively = false }) => {
       size: (20 / window.innerHeight) * container.current.clientHeight,
     };
     const consider = renderProgressively ? toRender : data;
+    if (!consider) return setImgError(true);
     const points = consider.map((point) =>
       point.map((p) => ({
         x: p[0] * container.current.clientWidth,
@@ -69,8 +77,26 @@ export default ({ data, renderProgressively = false }) => {
     }
   }, []);
 
+  const reDraw = () => {
+    if (redrawOnClick && data.length == 0) {
+      setPaths([]);
+      setData(JSON.parse(JSON.stringify(originalData)));
+      setToRender([[]]);
+      setReRender(true);
+    }
+  };
+
+  useEffect(() => {
+    if (reRender) {
+      console.log(data.length);
+      console.log(originalData.length);
+      setReRender(false);
+      addToRender();
+    }
+  }, [reRender]);
+
   return (
-    <div ref={container} className="w-full h-full">
+    <div ref={container} className="w-full h-full" onClick={reDraw}>
       <svg
         style={{
           touchAction: "none",
@@ -80,7 +106,16 @@ export default ({ data, renderProgressively = false }) => {
         }}
       >
         {paths.map((p, ind) => {
-          return <path d={p} key={ind} />;
+          if (imgError) {
+            return (
+              <div>
+                <h2>The image could not be loaded!</h2>
+                <h4>Try refreshing the page and logging in</h4>
+              </div>
+            );
+          } else {
+            return <path d={p} key={ind} />;
+          }
         })}
       </svg>
     </div>
