@@ -139,8 +139,6 @@ export default ({ callback, percentageLoader }) => {
     setup();
   }, []);
 
-  useEffect(() => console.log(percentageLoader), [percentageLoader]);
-
   return (
     <div className="w-full h-full">
       <video autoPlay id="video" className="rounded-2xl w-full h-full hidden" />
@@ -159,3 +157,4 @@ export default ({ callback, percentageLoader }) => {
     </div>
   );
 };
+H;
