@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
 import { getStroke } from "perfect-freehand";
 import { useRouter } from "next/navigation";
-import { faColonSign, faL } from "@fortawesome/free-solid-svg-icons";
 
 export default ({
   originalData,
@@ -31,6 +30,10 @@ export default ({
     );
   };
 
+  useEffect(() => {
+    console.log(`Dimesnions changed at: ${Date.now()}`);
+  }, [svgRef]);
+
   const addToRender = () => {
     if (data?.length === 0) return;
     if (data && data[0].length === 0) {
@@ -47,7 +50,7 @@ export default ({
     setTimeout(addToRender, 5);
   };
 
-  useEffect(() => {
+  const draw = () => {
     const updatedOptions = {
       ...options,
       size: (20 / window.innerHeight) * container.current.clientHeight,
@@ -64,7 +67,9 @@ export default ({
     const strokes = points.map((stroke) => getStroke(stroke, updatedOptions));
     const svgPaths = strokes.map(getSvgPathFromStroke);
     setPaths(svgPaths);
-  }, [container.current.clientWidth, container.current.clientHeight, toRender]);
+  };
+
+  useEffect(draw, [container, toRender]);
 
   const checkIfInViewPort = () => {
     if (isInViewPort()) {
@@ -75,6 +80,7 @@ export default ({
   };
 
   useEffect(() => {
+    window.addEventListener("resize", draw);
     if (renderProgressively) {
       checkIfInViewPort();
     }
@@ -91,8 +97,6 @@ export default ({
 
   useEffect(() => {
     if (reRender) {
-      console.log(data.length);
-      console.log(originalData.length);
       setReRender(false);
       addToRender();
     }
@@ -100,7 +104,6 @@ export default ({
 
   useEffect(() => {
     if (svgRefCallback && svgRef && paths.length) {
-      console.log(paths.length);
       svgRefCallback(svgRef);
     }
   }, [svgRef, paths]);
