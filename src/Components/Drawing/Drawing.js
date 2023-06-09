@@ -64,7 +64,7 @@ export default ({
     const strokes = points.map((stroke) => getStroke(stroke, updatedOptions));
     const svgPaths = strokes.map(getSvgPathFromStroke);
     setPaths(svgPaths);
-  }, [container, toRender]);
+  }, [container.current.clientWidth, container.current.clientHeight, toRender]);
 
   const checkIfInViewPort = () => {
     if (isInViewPort()) {
