@@ -67,6 +67,12 @@ export default () => {
   const handleRadioButtons = (e) =>
     formik.setFieldValue("privacy", e.target.value);
 
+  const svgCallback = (svg) => {
+    var s = new XMLSerializer().serializeToString(svg.current);
+    var encodedData = window.btoa(s);
+    console.log(`data:image/svg+xml;base64,${encodedData}`);
+  };
+
   return (
     <div className={styles.outerContainer}>
       <div className={styles.signupCard}>
@@ -97,7 +103,12 @@ export default () => {
             )}
           </div>
           <div className="w-full h-60 mx-0 my-5">
-            {renderImg && <Drawing originalData={savedDrawing} />}
+            {renderImg && (
+              <Drawing
+                originalData={savedDrawing}
+                svgRefCallback={svgCallback}
+              />
+            )}
           </div>
           <div className={styles.radioInput}>
             <fieldset>

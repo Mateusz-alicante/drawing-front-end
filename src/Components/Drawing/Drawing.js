@@ -2,11 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { options, getSvgPathFromStroke } from "../../utils/strokeOptions";
 import { getStroke } from "perfect-freehand";
 import { useRouter } from "next/navigation";
+import { faColonSign, faL } from "@fortawesome/free-solid-svg-icons";
 
 export default ({
   originalData,
   renderProgressively = false,
   redrawOnClick = false,
+  svgRefCallback = false,
 }) => {
   const container = useRef(null);
   const [data, setData] = useState(JSON.parse(JSON.stringify(originalData))); // This is the data that will be used to render the drawing
@@ -15,6 +17,7 @@ export default ({
   const [paths, setPaths] = useState([]);
   const [imgError, setImgError] = useState(false); // This will be used to show a message if there is an error loading the image
   const [reRender, setReRender] = useState(false);
+  const svgRef = useRef(null);
 
   const isInViewPort = () => {
     if (!container.current) return false;
@@ -95,9 +98,17 @@ export default ({
     }
   }, [reRender]);
 
+  useEffect(() => {
+    if (svgRefCallback && svgRef && paths.length) {
+      console.log(paths.length);
+      svgRefCallback(svgRef);
+    }
+  }, [svgRef, paths]);
+
   return (
     <div ref={container} className="w-full h-full" onClick={reDraw}>
       <svg
+        ref={svgRef}
         style={{
           touchAction: "none",
           height: "100%",

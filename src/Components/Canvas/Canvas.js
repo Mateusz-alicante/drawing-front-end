@@ -36,7 +36,7 @@ export default function Canvas() {
     undefined,
     undefined,
   ]);
-  const [traversedPoints, setTraversedPoints] = useState([[]]);
+  const [traversedPoints, setTraversedPoints] = useState([]);
   const [loveTime, setLoveTime] = useState(0);
   const [downTime, setDownTime] = useState(0);
 
@@ -53,10 +53,14 @@ export default function Canvas() {
         setPoints([[coords[0], coords[1], coords[2]]]);
         setS((prevS) => [...prevS, getSvgPathFromStroke(stroke)]);
         setTraversedPoints((prevTraversedPoints) => {
-          prevTraversedPoints[prevTraversedPoints.length - 1].push(
-            gestureInfo[3]
-          );
-          return prevTraversedPoints;
+          if (!prevTraversedPoints[0]) {
+            return [[gestureInfo[3]]];
+          } else {
+            prevTraversedPoints[prevTraversedPoints.length - 1].push(
+              gestureInfo[3]
+            );
+            return prevTraversedPoints;
+          }
         });
       } else {
         setPoints([...points, [coords[0], coords[1], coords[2]]]);
@@ -65,10 +69,14 @@ export default function Canvas() {
           return [...prevS, getSvgPathFromStroke(stroke)];
         });
         setTraversedPoints((prevTraversedPoints) => {
-          prevTraversedPoints[prevTraversedPoints.length - 1].push(
-            gestureInfo[3]
-          );
-          return prevTraversedPoints;
+          if (!prevTraversedPoints[0]) {
+            return [[gestureInfo[3]]];
+          } else {
+            prevTraversedPoints[prevTraversedPoints.length - 1].push(
+              gestureInfo[3]
+            );
+            return prevTraversedPoints;
+          }
         });
       }
     } else if (gestureInfo[2] === "Open_Palm") {
@@ -86,6 +94,10 @@ export default function Canvas() {
         setS((prevS) => {
           prevS.pop();
           return [...prevS];
+        });
+        setTraversedPoints((prev) => {
+          prev.pop();
+          return [...prev];
         });
         setDownTime([[]]);
         setDownTime(0);
