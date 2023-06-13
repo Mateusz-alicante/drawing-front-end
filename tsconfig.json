@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Components/Canvas/Canvas.js", "src/app/page.tsx", "src/Components/GestureRecognizer.js", "src/Components/GestureRecognizer.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Components/Canvas/Canvas.js", "src/app/page.tsx", "src/Components/GestureRecognizer.js", "src/Components/GestureRecognizer.js", "src/app/api/test/route.js"],
   "exclude": ["node_modules"]
 }

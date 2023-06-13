@@ -28,17 +28,15 @@ export default function Home() {
   const loginSubmit = async (fv) => {
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/login`,
-        {
-          password: fv.password,
-          email: fv.email,
-        }
-      ); // send the data TO the backend post request, and then get the response BACK from the post result
+      const { data } = await axios.post(`api/login`, {
+        password: fv.password,
+        email: fv.email,
+      }); // send the data TO the backend post request, and then get the response BACK from the post result
       const { message, ...rest } = data; // "rest" includes all fields other than message from the post action (eg. firstname, lastName, password, etc.)
       setUser(rest);
       setLoading(false);
       setError("");
+      console.log(rest);
       if (pendingDrawing) {
         setPendingDrawing(false);
         router.push("/new");
@@ -47,6 +45,7 @@ export default function Home() {
       router.push("/people");
     } catch (error) {
       setLoading(false);
+      console.log(error);
       setError(error.response.data.message); // response is from the post route in backend
     }
   };

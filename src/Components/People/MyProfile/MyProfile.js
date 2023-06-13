@@ -31,28 +31,25 @@ export default () => {
       formData.append("userID", user?.id);
 
       // upload images to cloudinary
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/uploadImage`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const { data } = await axios.post(`api/uploadImage`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
       // data is the cludinary link
       // add cloudinary link to post
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/uploadImageLink`,
+      const res = await axios.post(
+        `api/uploadImageLink`,
         {
           user: user,
-          image: data,
+          image: data.Image,
         },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
       setUser((prev) => {
-        return { ...prev, picture: data };
+        return { ...prev, picture: data.Image };
       });
       setUpdating(false);
       setImage("");

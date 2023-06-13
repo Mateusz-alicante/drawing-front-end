@@ -39,7 +39,7 @@ export default () => {
   const postSubmit = async (fv) => {
     try {
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/createPost`,
+        `api/createPost`,
         {
           description: fv.description,
           privacy: fv.privacy,
@@ -56,6 +56,7 @@ export default () => {
       setError("");
       router.push("/posts");
     } catch (error) {
+      console.log(error);
       setError(error.response.data.message); // response is from the post route in backend
     }
   };
@@ -70,7 +71,6 @@ export default () => {
   const svgCallback = (svg) => {
     var s = new XMLSerializer().serializeToString(svg.current);
     var encodedData = window.btoa(s);
-    console.log(`data:image/svg+xml;base64,${encodedData}`);
   };
 
   return (

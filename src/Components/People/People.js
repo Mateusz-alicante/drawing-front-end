@@ -26,9 +26,7 @@ export default function People() {
   };
   const getPeople = async () => {
     try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getPeople`
-      );
+      const { data } = await axios.get(`api/getPeople`);
       setPeople(data.people);
     } catch (error) {
       console.log(error.response.data.message);

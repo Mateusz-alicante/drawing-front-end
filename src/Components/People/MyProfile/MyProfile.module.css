@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: row;
     margin: 2em 0;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .myProfileSingleContainer h3 {
@@ -44,9 +44,6 @@
     padding: 0 1em;
 }
 
-.myProfileSingleContainer {
-
-}
 
 .imageFrame {
     height: 100%;
@@ -75,5 +72,5 @@
     padding: 0.5em;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
 }

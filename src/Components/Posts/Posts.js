@@ -32,7 +32,7 @@ export default function Posts() {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_REACT_APP_BACKEND}/getPosts?page=${page}&limit=${PostRequestLimit}&option=${postOption}`,
+        `api/getPost?page=${page}&limit=${PostRequestLimit}&option=${postOption}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,

@@ -68,6 +68,11 @@
     border: 3px solid #46d0ce;
 }
 
+.addFriend:hover {
+    color: rgb(35,35,35);
+    background-color: #46d0ce;
+}
+
 .deleteFriend {
     background-color: rgb(35, 35, 35);
     border-radius: 1em;
@@ -76,6 +81,11 @@
     margin-top: 0.5em;
     border: 3px solid rgb(255, 78, 78);
     color: rgb(255, 78, 78);
+}
+
+.deleteFriend:hover {
+    background-color: rgb(255, 78, 78);
+    color: rgb(35,35,35);
 }
 
 .buttonContainer {
